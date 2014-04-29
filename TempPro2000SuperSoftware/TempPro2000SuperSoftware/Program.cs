@@ -94,8 +94,11 @@ namespace TempPro2000SuperSoftware
         private static void responseHandler(object sender, SerialDataReceivedEventArgs args)
         {
             string y = _serialPort.ReadLine();
-
-            y = y.Remove(0, 1);
+            if (y.Length > 0)
+            {
+                y = y.Remove(0, 1);
+            }
+           
 
             //Om stoppsträngen kommer:
             if (y == "stop")
