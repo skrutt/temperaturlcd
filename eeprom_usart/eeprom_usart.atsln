@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "eeprom_usart", "eeprom_usart\eeprom_usart.cproj", "{AF71A36D-DAC2-4C3C-A9D6-F3A0FB8DC5F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF71A36D-DAC2-4C3C-A9D6-F3A0FB8DC5F7}.Debug|AVR.ActiveCfg = Debug|AVR
+		{AF71A36D-DAC2-4C3C-A9D6-F3A0FB8DC5F7}.Debug|AVR.Build.0 = Debug|AVR
+		{AF71A36D-DAC2-4C3C-A9D6-F3A0FB8DC5F7}.Release|AVR.ActiveCfg = Release|AVR
+		{AF71A36D-DAC2-4C3C-A9D6-F3A0FB8DC5F7}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
