@@ -1,0 +1,5 @@
+\\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\bin\Debug\TempPro2000SuperSoftware.exe.config
+\\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\bin\Debug\TempPro2000SuperSoftware.exe
+\\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\bin\Debug\TempPro2000SuperSoftware.pdb
+\\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Debug\TempPro2000SuperSoftware.exe
+\\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Debug\TempPro2000SuperSoftware.pdb
