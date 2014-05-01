@@ -288,9 +288,9 @@ void LCD_write_big_char(unsigned char tecken, char color, int x, int y, int size
 		//LCD_write_big_char_row( tecken, color, x + i, y+18);		//Debug pryl, binärt värde
 		
 	}
-	LCD_write_big_char_row( 0, color, x + 5*size, y, size);
+	LCD_write_big_char_row( 0, color, x + 5*size, y, size);			//fyll ut utrymme mellan bokstäver
 }
-void LCD_write_big_char_row(char row, char color, int x, int y, int size)	//skriv én kolumn av en bokstav
+void LCD_write_big_char_row(char row, char color, int x, int y, int size)	//skriv en kolumn av en bokstav
 {
 	for (int i = 0; i < 8; i++)	//loopa igenom column
 	{
