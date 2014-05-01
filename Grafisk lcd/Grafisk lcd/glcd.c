@@ -288,6 +288,7 @@ void LCD_write_big_char(unsigned char tecken, char color, int x, int y, int size
 		//LCD_write_big_char_row( tecken, color, x + i, y+18);		//Debug pryl, binärt värde
 		
 	}
+	LCD_write_big_char_row( 0, color, x + 5*size, y, size);
 }
 void LCD_write_big_char_row(char row, char color, int x, int y, int size)	//skriv én kolumn av en bokstav
 {
@@ -331,7 +332,7 @@ void LCD_write_big_string(char * message, char color, int x, int y, int size)	//
 		if (x + (size * 6) * (i + 1) >= x_size )
 		{
 			x = - ( i * (6 * size) );
-			y += ( 9 * size );
+			y += ( 8 * size );
 		}
 		LCD_write_big_char(message[i], color, x + ( size * 6 * i ), y, size);
 	}
@@ -378,11 +379,10 @@ void LCD_draw_graph(char color, int y_offset, float y_graph_size, float * arr, i
 	float topvalue = arr[0], bottomvalue = arr[0];
 	
 	#define top_bottom_offset 2	//offset mot top och botten för snyggare graf
-
-
-	char graph_width = x_width * 2;		//en grej som ger finare graph, i väntan på standardisering
-
-
+	
+	//char graph_width;
+	#define graph_width x_width * 2		//en grej som ger finare graph, i väntan på standardisering
+	
 	LCD_draw_x_line(0x00, y_offset, graph_width );		//rita outline
 	LCD_draw_x_line(0x00, bottom, graph_width );	
 	

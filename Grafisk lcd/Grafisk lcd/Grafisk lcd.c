@@ -45,7 +45,8 @@ void sound_toggle();
 
 static char buffer[bufferlen];		//uart buffer
 int point = 0;						//pekare till uartbuffer
-bool connected = false;				//flagga för anslutning
+volatile bool got_signal_strength = true;				//flagga för hämtning av signalstyrka
+volatile char bt_strength[4];							//minne för signalstyrka
 bool update_graph_flag = false;
 
 static float arr[arr_length];			//array för graf
@@ -55,6 +56,7 @@ static float arr[arr_length];			//array för graf
 
 
 static char strbuf[6] = "S";		//buffer för strängjämförelse
+
 
 int high_alarm_level, low_alarm_level = 0;
 
@@ -91,7 +93,7 @@ ISR(USART_RX_vect)
 		}
 		
 
-		connected = true;
+		//connected = true;
 		
 		point = 0;	//nollställ pekare
 		if (mem_place > arr_length - 2)
@@ -101,8 +103,17 @@ ISR(USART_RX_vect)
 		}
 		
 	}
-
 	
+	else if (strncmp("\r\n0,", strbuf, 4) == 0)	//ta emot signalstyrka
+	{
+		//bt_strength = "000";
+		
+		bt_strength[0] = buffer[point-5];	//spara
+		bt_strength[1] = buffer[point-4];
+		bt_strength[2] = buffer[point-3];
+		bt_strength[3] = 0;
+		got_signal_strength = true;			//sätt flagga för signal att mottagits
+	}
 	
 }
 bool compare_input(char * CompareString, int length, int offset)
@@ -127,20 +138,24 @@ void setup()
 	DDRB = 0xff;
 	DDRD = 0xff;
 	
-	bt_reset();
 	
-	high_alarm_level = eeprom_read_word(alarm_eeprom_adr);		//läs nivåer från eeprom
-	low_alarm_level = eeprom_read_word(alarm_eeprom_adr + 2);
+	
+	high_alarm_level = eeprom_read_word((unsigned int*)alarm_eeprom_adr);		//läs nivåer från eeprom
+	low_alarm_level = eeprom_read_word((unsigned int*)alarm_eeprom_adr + 2);
 	
 	sei();
 	usart_init(MYUBRR);	//hårdvaru uart
 	
 	init_serial();		//mjukvaru uart
 	
+	bt_reset();
 	
 	disp_all(white);	//Y
+	
+	usart_prstr("ATO\r");
+	_delay_ms(150);		//vänta på btmodul
 	usart_prstr("AT+btscan,3,0\r");
-	//usart_prstr("AT+setesc,++\r");
+	
 }
 bool button_press(char Button)
 {
@@ -150,6 +165,7 @@ bool button_press(char Button)
 	}
 	return false;
 }
+/*
 bool button_press_once(char Button)
 {
 	static char buttons;		//spara förra lägen här
@@ -162,7 +178,7 @@ bool button_press_once(char Button)
 	buttons = PINC;
 	
 	return false;
-}
+}*/
 
 int main(void)
 {
@@ -184,12 +200,12 @@ int main(void)
 			if (button_press(inc_button))
 			{
 				high_alarm_level++;
-				eeprom_write_word(alarm_eeprom_adr,high_alarm_level);
+				eeprom_write_word((unsigned int*)alarm_eeprom_adr,high_alarm_level);
 			}
 			else if (button_press(dec_button))
 			{
 				high_alarm_level--;
-				eeprom_write_word(alarm_eeprom_adr,high_alarm_level);
+				eeprom_write_word((unsigned int*)alarm_eeprom_adr,high_alarm_level);
 			}
 		}
 		else if ( button_press(low_button) )		//styr inmatning av låg larmnivå
@@ -200,12 +216,12 @@ int main(void)
 			if (button_press(inc_button))
 			{
 				low_alarm_level++;
-				eeprom_write_word(alarm_eeprom_adr+2,low_alarm_level);
+				eeprom_write_word((unsigned int*)alarm_eeprom_adr+2,low_alarm_level);
 			}
 			else if (button_press(dec_button))
 			{
 				low_alarm_level--;
-				eeprom_write_word(alarm_eeprom_adr+2,low_alarm_level);
+				eeprom_write_word((unsigned int*)alarm_eeprom_adr+2,low_alarm_level);
 			}
 		}		
 		else if ( button_press(send_data_button) )		//Skicka data om knappen är tryckt!
@@ -237,13 +253,22 @@ int main(void)
 			
 			if (update_graph_flag)
 			{
-				LCD_draw_graph(red, 135, 104, arr, arr_length);
-			/*	usart_prstr("+++\r");
-				_delay_ms(120);
-				usart_prstr("AT+BTRSSI,1\r");		//saker för att läsa signalstyrka
-				_delay_ms(2000);
-				usart_prstr("AT+BTRSSI,0\r");
-				usart_prstr("ATO\r");*/
+				LCD_draw_graph(red, 135, 104, arr, arr_length);	//uppdatera graf
+				
+				got_signal_strength = false;
+				usart_prstr("+++\r");			//gå till standby för btmodul
+				_delay_ms(90);					//vänta på standby
+				usart_prstr("AT+BTRSSI,1\r");		//skicka förfrågan om signalstyrka
+				while( !got_signal_strength )		//vänta på att isr hämtar svar
+				{
+					//nop
+				}
+				usart_prstr("AT+BTRSSI,0\r");		//avsluta förstågan om signal
+				usart_prstr("ATO\r");				//återställ bt till normalläge
+				
+				
+				LCD_write_string("Signal:", black, 270, 200);		//skriv ut signalstyrka
+				LCD_write_string(bt_strength, black, 270, 209);
 				
 				update_graph_flag = false;
 			}
@@ -263,9 +288,11 @@ void sound_toggle(){
 
 void bt_reset()
 {
+	LCD_write_big_string("Återställer Btmodul                                      ", black,0,0, 4);
 	PORTD &= ~bt_reset_pin;
-	_delay_ms(10);
+	_delay_ms(1100);		//vänta på modul
 	PORTD |= bt_reset_pin;
+	_delay_ms(500);		//vänta på modul
 }
 
 void send_data_CSV()	//skicka data på soft serial i csvformat
@@ -280,7 +307,7 @@ void send_data_CSV()	//skicka data på soft serial i csvformat
 	//loop data
 	for (int i = 0; i < arr_length; i++)
 	{
-		send_string("Jimmy vill ha mera utfyllnad!  Mycket data");		//precist konfigurerad data att skicka
+		send_string("Jimmy vill ha mera utfyllnad!");		//precist konfigurerad data att skicka
 		send_string(float_to_str(i));
 		send_char(';');
 		send_string(float_to_str(arr[i]));
