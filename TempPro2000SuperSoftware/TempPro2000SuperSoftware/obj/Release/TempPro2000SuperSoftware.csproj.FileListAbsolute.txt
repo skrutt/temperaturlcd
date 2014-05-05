@@ -3,3 +3,6 @@
 \\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\bin\Release\TempPro2000SuperSoftware.pdb
 \\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Release\TempPro2000SuperSoftware.exe
 \\tfe-magnum\users\jiut0001\visual studio 2013\Projects\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Release\TempPro2000SuperSoftware.pdb
+C:\Users\jiut0001\Desktop\GitHub\temperaturlcd\TempPro2000SuperSoftware\TempPro2000SuperSoftware\bin\Release\TempPro2000SuperSoftware.exe.config
+C:\Users\jiut0001\Desktop\GitHub\temperaturlcd\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Release\TempPro2000SuperSoftware.exe
+C:\Users\jiut0001\Desktop\GitHub\temperaturlcd\TempPro2000SuperSoftware\TempPro2000SuperSoftware\obj\Release\TempPro2000SuperSoftware.pdb
