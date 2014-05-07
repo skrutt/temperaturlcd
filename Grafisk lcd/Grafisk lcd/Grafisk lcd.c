@@ -257,7 +257,7 @@ int main(void)
 				
 				got_signal_strength = false;
 				usart_prstr("+++\r");			//gå till standby för btmodul
-				_delay_ms(90);					//vänta på standby
+				_delay_ms(200);					//vänta på standby
 				usart_prstr("AT+BTRSSI,1\r");		//skicka förfrågan om signalstyrka
 				while( !got_signal_strength )		//vänta på att isr hämtar svar
 				{
