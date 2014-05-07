@@ -187,7 +187,7 @@ int main(void)
     while(1)
     {
 
-		LCD_write_string(buffer,black,0,100);
+		//LCD_write_string(buffer,black,0,100);
 	
 		//send_char(~(128+32+8+2));
 		

@@ -1,0 +1,10 @@
+Service , Message , Max , Min , Average , Count , frequency , TimedOut
+
+Stream,setLogBits,331.0331,5.0005,168.0168,2,0
+Tool,setupTool,636.0636,636.0636,636.0636,1,0
+Tool,getContext,4.0004,4.0004,4.0004,2,0
+Tool,connect,14.0014,14.0014,14.0014,1,0
+Tool,setProperties,105.0105,105.0105,105.0105,1,0
+Device,getContext,3.0003,3.0003,3.0003,1,0
+Processes,launch,1740.174,1740.174,1740.174,1,0
+Tool,tearDownTool,4.0004,4.0004,4.0004,1,0
