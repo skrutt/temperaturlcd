@@ -12,7 +12,7 @@
 #define eeprom_mem_slots ( eeprom_stop - eeprom_start ) / 2 - 1 // en slot går till nuvarande plats
 #define update_Hz 5
 #define update_delay 1000 / update_Hz
-#define save_to_eeprom_every_min 10
+#define save_to_eeprom_every_min 10  //Nuvarande temperatur sparas till EEPROM var 10:e minut
 #define eeprom_save_when 60*update_Hz*save_to_eeprom_every_min
 
 #define buffer_len 80
@@ -37,13 +37,13 @@ int charPos = 0;
 char message[] = "Nuvarande temperatur:";
 void setup()
 {
-	DDRD = 255;
+	DDRD = 255;				//Port D som utgång
 	bluetooth_reset();
-	DDRC = 0;
-	PORTC = 0xFF;
-	sei();
-	usart_init(MYUBRR);
-	SPI_init();
+	DDRC = 0;				//Port C som ingång
+	PORTC = 0xFF;			//Pullups på Port C
+	sei();					//enable interrupts
+	usart_init(MYUBRR);		//Initiera usart-kommunikation
+	SPI_init();				//initiera SPI-kommunikation med LM74
 	eeprom_pointer = find_mem_place();	//letar rätt på senaste minnesplats
 }
 
@@ -146,34 +146,6 @@ void send_eeprom()		//Skicka temperatur sparat i eeprom till displaymodulen
 		usart_putchar(temp_array[i] & 255);
 		//_delay_ms(10);
 	}
-}
-
-void usart_float(float num)
-{
-	num = num / 128;
-	if(num < 0)
-	{
-		usart_putchar('-');
-		num = -num;
-	}
-	
-	if (num >= 100)
-	{
-		char charchar = num / 100;
-		usart_putchar(charchar + 48);
-		num -= charchar * 100;
-	}
-	if (num >= 10)
-	{
-		char charchar = num / 10;
-		usart_putchar(charchar + 48);
-		num -= charchar * 10;
-	}
-	usart_putchar(num + 48);
-	usart_putchar(46);
-	int intint = num;
-	int decimals = (num - intint) * 10;
-	usart_putchar(decimals + 48);
 }
 
 void bluetooth_reset() {
