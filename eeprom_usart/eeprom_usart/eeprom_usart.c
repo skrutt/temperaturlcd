@@ -12,7 +12,7 @@
 #define eeprom_mem_slots ( eeprom_stop - eeprom_start ) / 2 - 1 // en slot går till nuvarande plats
 #define update_Hz 5
 #define update_delay 1000 / update_Hz
-#define save_to_eeprom_every_min 0.1
+#define save_to_eeprom_every_min 10
 #define eeprom_save_when 60*update_Hz*save_to_eeprom_every_min
 
 #define buffer_len 80
