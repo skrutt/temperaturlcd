@@ -150,16 +150,16 @@ void setup()
 	
 	bt_reset();
 	
-	disp_all(white);	//Y
+	disp_all(white);	//Rita vit bakgrund över hela skärmen
 	
-	usart_prstr("ATO\r");
+	usart_prstr("ATO\r");	//återgå från standbyläge
 	_delay_ms(150);		//vänta på btmodul
-	usart_prstr("AT+btscan,3,0\r");
+	usart_prstr("AT+btscan,3,0\r");	//Sätt modul att vänta på anslutning
 	
 }
 bool button_press(char Button)
 {
-	if (~PINC & Button)
+	if (~PINC & Button)	//kontrollera om knapp är nertryckt
 	{
 		return true;
 	}
@@ -325,7 +325,7 @@ char * float_to_str(float num)
 {
 	static char buffer[9];
 	int intnum = num*10;	//konvertera till int
-	int insert_zero = 100;	//när ska vi skriva nollor efter tal?
+	int insert_zero = 100;	//när ska vi skriva nollor efter tal? 100 skriver en nolla på heltal, dvs vi får tex 0,5 istället för ,5. 1000 skulle ge resultat som 09,7 eller 11,4
 	
 	int i = 0;
 	if (intnum < 0)		//lägg till minustecken
@@ -338,17 +338,17 @@ char * float_to_str(float num)
 	for (int j = 10000;j >= 1; j /= 10.0 )	//loopa igenom tal och skapa nummer
 	{
 		
-		if (intnum >= j || j < insert_zero)	
+		if (intnum >= j || j < insert_zero)	//loopar igenom j baklänges, och jämför mot talet intnum för att se om det är större. Detta gör att vi effektivt kan skapa tal utan en ledande nolla, och sen fylla ut med nollor efter den första siffran i talet
 		{
-			if (j == 1)
+			if (j == 1)		//stoppa in ett decimaltecken innan sista tecknet
 			{
 				buffer[i] = ',';
 				i++;
 			}
-			buffer[i] = intnum / j  + 48;
+			buffer[i] = intnum / j  + 48;	//skapa siffra genom heltalsdivision, eftersom intnum är större än j får vi ett tal 1-9, och med en offset på 48 hamnar vi på rätt ställe i asciitabellen
 			i++;
 			
-			intnum = intnum % j ;
+			intnum = intnum % j ;	// plocka bort siffran vi nyss skrev ut
 			insert_zero = j;	//efter vi skrivit en siffra skriver vi alltid nollor efter
 			
 		}
