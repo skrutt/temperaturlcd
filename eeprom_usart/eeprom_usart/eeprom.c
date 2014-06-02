@@ -42,7 +42,7 @@ int * read_mem()
 {
 	static int return_mem[ eeprom_mem_slots ];	//reservera minne
 	unsigned int array_pointer = 0;
-	unsigned int i = eeprom_pointer;
+	unsigned int i = eeprom_pointer;		//detta bör istället vara en pointer
 	
 	if (i == eeprom_start)		//wrap around memory
 	{
@@ -50,7 +50,7 @@ int * read_mem()
 	}else
 	{
 		i--;
-		i--;		//två byte på varje plats
+		i--;		//två byte på varje plats	//för nästa rev ändra i till en pointer, så behöver vi bara stega ett steg
 	}
 	
 	

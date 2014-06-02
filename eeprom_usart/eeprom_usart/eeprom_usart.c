@@ -23,7 +23,7 @@ int temp_array[mem_slots+1];
 int array_place = 0;
 //--
 
-unsigned int * eeprom_pointer = 0;
+unsigned int  *eeprom_pointer = 0;
 int temp;
 
 #include "SPI.c"
@@ -62,7 +62,7 @@ int main(void)
 		//Om ansluten skicka nuvarande temperatur:
 		else {
 			usart_prstr("SUPER");
-			usart_putchar(0);
+			usart_putchar(0);		//index 0
 			usart_putchar(0);
 			usart_putchar(temp >> 8);
 			usart_putchar(temp & 255);
